@@ -1,0 +1,13 @@
+{
+    "name": "proyecto/api-servicios",
+    "description": "Microservicio REST con Slim 4 para el inventario",
+    "require": {
+        "php": ">=8.1",
+        "slim/slim": "^4.12",
+        "slim/psr7": "^1.6",
+        "firebase/php-jwt": "^6.10"
+    },
+    "autoload": {
+        "psr-4": { "App\\": "src/" }
+    }
+}

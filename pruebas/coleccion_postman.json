@@ -1,0 +1,84 @@
+{
+  "info": {
+    "name": "API Inventario - Slim",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base", "value": "http://localhost:8081" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Login (200 / 401)",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript",
+        "exec": ["const j = pm.response.json();", "if (j.token) pm.collectionVariables.set('token', j.token);"] } }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@correo.com\",\n  \"password\": \"admin123\"\n}" },
+        "url": "{{base}}/api/login"
+      }
+    },
+    {
+      "name": "Listar productos (200)",
+      "request": { "method": "GET", "url": "{{base}}/api/productos" }
+    },
+    {
+      "name": "Filtrar por categoria (200)",
+      "request": { "method": "GET", "url": "{{base}}/api/productos?categoria=Perifericos&buscar=mouse" }
+    },
+    {
+      "name": "Producto por id (200)",
+      "request": { "method": "GET", "url": "{{base}}/api/productos/1" }
+    },
+    {
+      "name": "Producto inexistente (404)",
+      "request": { "method": "GET", "url": "{{base}}/api/productos/9999" }
+    },
+    {
+      "name": "Descontar stock (200)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"id\": 1,\n  \"cantidad\": 2\n}" },
+        "url": "{{base}}/api/productos/descontar"
+      }
+    },
+    {
+      "name": "Descontar sin token (401)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"id\": 1,\n  \"cantidad\": 2\n}" },
+        "url": "{{base}}/api/productos/descontar"
+      }
+    },
+    {
+      "name": "Descontar mas del stock (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"id\": 1,\n  \"cantidad\": 99999\n}" },
+        "url": "{{base}}/api/productos/descontar"
+      }
+    },
+    {
+      "name": "Descontar datos invalidos (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"id\": 1,\n  \"cantidad\": -5\n}" },
+        "url": "{{base}}/api/productos/descontar"
+      }
+    }
+  ]
+}
