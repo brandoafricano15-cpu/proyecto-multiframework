@@ -1,0 +1,16 @@
+# Dependencias
+vendor/
+node_modules/
+
+# Configuración local y secretos
+.env
+*.log
+
+# Archivos temporales de Word / sistema
+~$*
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
